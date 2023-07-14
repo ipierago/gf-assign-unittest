@@ -3,9 +3,9 @@ import cors from 'cors';
 import { v4 as uuidv4 } from 'uuid';
 
 import { appDataSource } from "./AppDataSource";
-import { createUser, deleteUser } from './services';
+import { createUser, deleteUser, userAddMoney, userSpendMoney } from './services';
 import { User } from "./entity/User";
-import { CreateUserRequest, DeleteUserRequest } from './types';
+import { CreateUserRequest, DeleteUserRequest, UserAddMoneyRequest, UserSpendMoneyRequest } from './types';
 
 const MY_PORT = 30080;
 
@@ -46,6 +46,33 @@ app.post('/user/delete', async (req: Request, res: Response) => {
     const deleteUserRequest: DeleteUserRequest = req.body;
     const deleteUserResponse = await deleteUser(deleteUserRequest, correlationId);
     res.json(deleteUserResponse);
+  } catch (error) {
+    console.error(`ERROR [${correlationId}]: ${error}`);
+    res.status(500).send({ message: `Error [${correlationId}]: ${JSON.stringify(error)}` });
+  }
+});
+
+
+app.post('/user/add-money', async (req: Request, res: Response) => {
+  const correlationId = uuidv4();
+  try {
+    console.log(`/user/add-money ${JSON.stringify(req.body)} [${correlationId}]`);
+    const userAddMoneyRequest: UserAddMoneyRequest = req.body;
+    const userAddMoneyResponse = await userAddMoney(userAddMoneyRequest, correlationId);
+    res.json(userAddMoneyResponse);
+  } catch (error) {
+    console.error(`ERROR [${correlationId}]: ${error}`);
+    res.status(500).send({ message: `Error [${correlationId}]: ${JSON.stringify(error)}` });
+  }
+});
+
+app.post('/user/spend-money', async (req: Request, res: Response) => {
+  const correlationId = uuidv4();
+  try {
+    console.log(`/user/spend-money ${JSON.stringify(req.body)} [${correlationId}]`);
+    const userSpendMoneyRequest: UserSpendMoneyRequest = req.body;
+    const userSpendMoneyResponse = await userSpendMoney(userSpendMoneyRequest, correlationId);
+    res.json(userSpendMoneyResponse);
   } catch (error) {
     console.error(`ERROR [${correlationId}]: ${error}`);
     res.status(500).send({ message: `Error [${correlationId}]: ${JSON.stringify(error)}` });

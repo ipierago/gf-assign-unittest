@@ -9,6 +9,9 @@ export class User extends BaseEntity {
   @Column()
   name!: string;
 
+  @Column({ default: 0 })
+  money!: number;
+
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', onUpdate: 'CURRENT_TIMESTAMP' })
   updatedAt!: Date;
 }

@@ -39,7 +39,7 @@ program
   });
 
 program
-  .command('delete-user <name>')
+  .command('delete-user <userId>')
   .description('delete a user')
   .action(async (userId: number) => {
     try {
@@ -50,5 +50,28 @@ program
     }
   });
 
+program
+  .command('user-add-money <userId> <amount>')
+  .description('add money to a user')
+  .action(async (userId: number, amount: number) => {
+    try {
+      const res = await axios.post(`${BACKEND_URL}/user/add-money`, { userId, amount });
+      console.log(res.data);
+    } catch (error) {
+      console.error(error);
+    }
+  });
+
+program
+  .command('user-spend-money <userId> <amount>')
+  .description('spend money to a user')
+  .action(async (userId: number, amount: number) => {
+    try {
+      const res = await axios.post(`${BACKEND_URL}/user/spend-money`, { userId, amount });
+      console.log(res.data);
+    } catch (error) {
+      console.error(error);
+    }
+  });
 
 program.parse(process.argv);
